@@ -6,12 +6,18 @@ using System.Threading.Tasks;
 
 namespace PseudoEngine.Graphics
 {
-    class Mesh
+    public class Mesh
     {
-        public Polygon[] meshPolygons;
+        public Polygon[] Polygons { get; private set; }
+
+        public Mesh(int polygonCount)
+        {
+            Polygons = new Polygon[polygonCount];
+        }
         public Mesh(Polygon[] polygons)
         {
-            this.meshPolygons = polygons;
+            Polygons = polygons;
         }
+
     }
 }

@@ -1,20 +1,7 @@
 ﻿using PseudoEngine.core;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PseudoEngine
 {
@@ -38,7 +25,7 @@ namespace PseudoEngine
 
         private void Engine_OnUpdate()
         {
-            using (var g = Graphics.FromHwnd(_win.Handle))
+            using (var g = System.Drawing.Graphics.FromHwnd(_win.Handle))
             {
                 _engine.Draw(g);
             }

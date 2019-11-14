@@ -9,10 +9,10 @@ namespace PseudoEngine.Graphics
     class Matrix
     {
        
-        Vertice[,] matrix;
+        Vertex[,] matrix;
         public Matrix(Mesh mesh)
         {
-            matrix = new Vertice[mesh.meshPolygons.Length, 3];
+        //    matrix = new Vertex[mesh.meshPolygons.Length, 3];
         }
     }
 }

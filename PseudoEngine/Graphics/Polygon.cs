@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 
 namespace PseudoEngine.Graphics
 {
-    class Polygon
+    public class Polygon
     {
-        public Vertice verticeX;
-        public Vertice verticeY;
-        public Vertice verticeZ;
-        public Polygon(Vertice verticeX, Vertice verticeY, Vertice verticeZ )
+        public Vertex Vertex1 { get; set; }
+        public Vertex Vertex2 { get; set; }
+        public Vertex Vertex3 { get; set; }
+
+        public Polygon(Vertex vertex1, Vertex vertex2, Vertex vertex3 )
         {
-            this.verticeX = verticeX;
-            this.verticeY = verticeY;
-            this.verticeZ = verticeZ;
+            Vertex1 = vertex1;
+            Vertex2 = vertex2;
+            Vertex3 = vertex3;
         }
+
     }
 }

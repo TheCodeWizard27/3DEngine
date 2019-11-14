@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace PseudoEngine.DrawApi
 {
@@ -23,25 +18,25 @@ namespace PseudoEngine.DrawApi
             Height = height;
             Bitmap = new Bitmap(Width, Height);
 
-            using (var g = Graphics.FromImage(Bitmap))
+            using (var g = System.Drawing.Graphics.FromImage(Bitmap))
             {
                 g.FillRectangle(new SolidBrush(ClearColor), 0, 0, Width, Height);
             }
         }
 
-        public Graphics GetGraphics()
+        public System.Drawing.Graphics GetGraphics()
         {
-            return Graphics.FromImage(Bitmap);
+            return System.Drawing.Graphics.FromImage(Bitmap);
         }
 
-        public void Clear(Graphics graphics)
+        public void Clear(System.Drawing.Graphics graphics)
         {
             graphics.FillRectangle(new SolidBrush(ClearColor), 0, 0, Width, Height);
         }
 
         public void Clear()
         {
-            using (var g = Graphics.FromImage(Bitmap))
+            using (var g = System.Drawing.Graphics.FromImage(Bitmap))
             {
                 g.FillRectangle(new SolidBrush(ClearColor), 0, 0, Width, Height);
             }
