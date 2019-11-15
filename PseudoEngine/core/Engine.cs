@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PseudoEngine.DrawApi;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Input;
@@ -25,15 +26,19 @@ namespace PseudoEngine.core
         public void Start()
         {
             Clock.Start();
+            Console.WriteLine("Started Engine Loop");
         }
         public void Stop()
         {
             Clock.Stop();
+            Console.WriteLine("Started Engine Loop");
         }
 
         public void Draw(System.Drawing.Graphics graphics)
         {
-            graphics.DrawLine(new Pen(Color.Black, 1), 0, 0, 100, 100);
+            var bufferedImage = new BufferedImage(800,600);
+            graphics.DrawImage(bufferedImage.Bitmap,0,0);
+            Console.WriteLine($"<{DateTime.Now}> Finished Drawing");
         }
 
         public void Clear()
