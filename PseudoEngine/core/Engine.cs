@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PseudoEngine.DrawApi;
+using System;
 using System.Drawing;
 using System.Windows.Threading;
 
@@ -11,9 +12,12 @@ namespace PseudoEngine.core
 
         public Engine(int fps)
         {
+            //DebugConsole.CreateConsole();
+
             Clock = new DispatcherTimer();
             Clock.Interval = new TimeSpan(1000 / fps);
             Clock.Tick += (_, __) => OnUpdate?.Invoke();
+            Console.WriteLine("Works");
         }
 
         public delegate void Update();
@@ -22,15 +26,19 @@ namespace PseudoEngine.core
         public void Start()
         {
             Clock.Start();
+            Console.WriteLine("Started Engine Loop");
         }
         public void Stop()
         {
             Clock.Stop();
+            Console.WriteLine("Started Engine Loop");
         }
 
         public void Draw(System.Drawing.Graphics graphics)
         {
-            graphics.DrawLine(new Pen(Color.Black, 1), 0, 0, 100, 100);
+            var bufferedImage = new BufferedImage(800,600);
+            graphics.DrawImage(bufferedImage.Bitmap,0,0);
+            Console.WriteLine($"<{DateTime.Now}> Finished Drawing");
         }
 
     }
