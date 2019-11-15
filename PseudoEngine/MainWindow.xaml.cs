@@ -1,4 +1,5 @@
 ﻿using PseudoEngine.core;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -29,11 +30,12 @@ namespace PseudoEngine
             {
                 _engine.Draw(g);
             }
+            _engine.Clear();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            
+            _engine.keybuffer.Add(e.Key);
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
