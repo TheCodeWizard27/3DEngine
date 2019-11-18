@@ -8,7 +8,7 @@ namespace PseudoEngine.Graphics
 {
     public class Mesh
     {
-        public Polygon[] Polygons { get; private set; }
+        public Polygon[] Polygons { get; set; }
 
         public Mesh(int polygonCount)
         {

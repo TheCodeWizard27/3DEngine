@@ -61,7 +61,7 @@
     </ApplicationDefinition>
     <Compile Include="Graphics\Matrix.cs" />
     <Compile Include="Graphics\Polygon.cs" />
-    <Compile Include="Graphics\Vertice.cs" />
+    <Compile Include="Graphics\Vertex.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
