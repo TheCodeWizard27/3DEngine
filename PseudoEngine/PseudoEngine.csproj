@@ -60,6 +60,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Graphics\Matrix.cs" />
+    <Compile Include="Graphics\Matrix2D.cs" />
+    <Compile Include="Graphics\Matrix3D.cs" />
     <Compile Include="Graphics\Polygon.cs" />
     <Compile Include="Graphics\Vertex.cs" />
     <Page Include="MainWindow.xaml">
