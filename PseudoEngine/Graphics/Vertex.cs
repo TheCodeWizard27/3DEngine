@@ -39,35 +39,38 @@ namespace PseudoEngine.Graphics
             SetPos(vertex.X, vertex.Y, vertex.Z);
         }
 
-        public void Add(double x, double y, double z)
+        public Vertex Add(double x, double y, double z)
         {
             X += x;
             Y += y;
             Z += z;
+            return this;
         }
-        public void Add(Vertex vertex)
+        public Vertex Add(Vertex vertex)
         {
-            Add(vertex.X, vertex.Y, vertex.Z);
+            return Add(vertex.X, vertex.Y, vertex.Z);
         }
-        public void Subtract(double x, double y, double z)
+        public Vertex Subtract(double x, double y, double z)
         {
             X -= x;
             Y -= y;
             Z -= z;
+            return this;
         }
-        public void Subtract(Vertex vertex)
+        public Vertex Subtract(Vertex vertex)
         {
-            Subtract(vertex.X, vertex.Y, vertex.Z);
+            return Subtract(vertex.X, vertex.Y, vertex.Z);
         }
-        public void Multiply(double x, double y, double z)
+        public Vertex Multiply(double x, double y, double z)
         {
             X *= x;
             Y *= y;
             Z *= z;
+            return this;
         }
-        public void Multiply(Vertex vertex)
+        public Vertex Multiply(Vertex vertex)
         {
-            Multiply(vertex.X, vertex.Y, vertex.Z);
+            return Multiply(vertex.X, vertex.Y, vertex.Z);
         }
 
         public Vertex Clone()

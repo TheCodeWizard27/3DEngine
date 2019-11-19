@@ -7,8 +7,6 @@
         mc:Ignorable="d"
         KeyDown="Window_KeyDown"
         KeyUp="Window_KeyUp"
-        Title="MainWindow" Height="600" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="639" Width="816" ResizeMode="CanMinimize">
+    <Grid/>
 </Window>

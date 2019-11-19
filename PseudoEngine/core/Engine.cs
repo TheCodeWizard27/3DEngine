@@ -22,6 +22,7 @@ namespace PseudoEngine.core
         {
             Clock = new DispatcherTimer();
             Clock.Interval = new TimeSpan(1000 / fps);
+            Init();
             Clock.Tick += (_, __) => OnUpdate?.Invoke();
         }
 
@@ -56,18 +57,6 @@ namespace PseudoEngine.core
         {
             Clock.Start();
             Console.WriteLine("Started Engine Loop");
-            var idMatrix = new Matrix(new double[,] {
-                {2,0,0},
-                {0,1,0},
-                {0,0,0.6666666666666667}
-            });
-            var someVector = new Matrix(new double[,] {
-                {1},
-                {2},
-                {3}
-            });
-            idMatrix.Multiply(someVector);
-            Console.WriteLine("Success");
         }
         public void Stop()
         {
@@ -77,20 +66,24 @@ namespace PseudoEngine.core
 
         public void Draw(System.Drawing.Graphics graphics)
         {
+            var screenMid = new Vertex(800 / 2, 600 / 2, 0);
             var bufferedImage = new BufferedImage(800,600);
+            var g = bufferedImage.GetGraphics();
 
-            /*foreach(var mesh in Meshes)
+            bufferedImage.Bitmap.SetPixel((int)screenMid.X, (int)screenMid.Y, Color.Cyan);
+            g.DrawRectangle(new Pen(Color.Cyan), 0, 0, 800-1, 600-1);
+
+            foreach(var mesh in Meshes)
             {
                 foreach(var polygon in mesh.Polygons)
                 {
-                    Vertex tmpVertex;
-
                     foreach (var vertex in new Vertex[] {polygon.Vertex1, polygon.Vertex2, polygon.Vertex3})
                     {
-                        
+                        var temp = vertex.Clone().Multiply(800/2, 600/2, 0).Add(screenMid);
+                        bufferedImage.Bitmap.SetPixel((int)temp.X, (int)temp.Y, Color.White);
                     }
                 }
-            }*/
+            }
 
             graphics.DrawImage(bufferedImage.Bitmap,0,0);
             Console.WriteLine($"<{DateTime.Now}> Finished Drawing");

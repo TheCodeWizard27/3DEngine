@@ -18,6 +18,7 @@ namespace PseudoEngine
         {
             InitializeComponent();
             _win = new WindowInteropHelper(GetWindow(this));
+            Left = 0 - SystemParameters.ResizeFrameVerticalBorderWidth - SystemParameters.FixedFrameVerticalBorderWidth;
 
             _engine = new Engine(60);
             _engine.OnUpdate += Engine_OnUpdate;
