@@ -80,5 +80,10 @@ namespace PseudoEngine.Graphics
 
         #endregion
 
+        public static Vertex From(Matrix1D mat)
+        {
+            return new Vertex(mat.X, mat.Y, mat.Z);
+        }
+
     }
 }

@@ -1,5 +1,7 @@
 ﻿using PseudoEngine.core;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -27,21 +29,47 @@ namespace PseudoEngine
 
         private void Engine_OnUpdate()
         {
+            Console.WriteLine("[" + string.Join(",",_engine.Keybuffer.ToList()) + "]");
+            foreach(var key in _engine.Keybuffer)
+            {
+                switch(key)
+                {
+                    case Key.W:
+                        _engine.Camera.Pos.Z += 0.05;
+                        break;
+                    case Key.S:
+                        _engine.Camera.Pos.Z -= 0.05;
+                        break;
+                    case Key.A:
+                        _engine.Camera.Pos.X -= 10;
+                        break;
+                    case Key.D:
+                        _engine.Camera.Pos.X += 10;
+                        break;
+                    case Key.LeftShift: case Key.RightShift:
+                        _engine.Camera.Pos.Y += 10;
+                        break;
+                    case Key.Space:
+                        _engine.Camera.Pos.Y -= 10;
+                        break;
+                }
+            }
+
             using (var g = System.Drawing.Graphics.FromHwnd(_win.Handle))
             {
                 _engine.Draw(g);
             }
-            _engine.Clear();
+            //_engine.Clear();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            _engine.keybuffer.Add(e.Key);
+            _engine.Keybuffer.Add(e.Key);
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-
+            _engine.Keybuffer.Remove(e.Key);
         }
     }
 }

@@ -59,9 +59,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="core\Camera.cs" />
+    <Compile Include="Graphics\Loader.cs" />
     <Compile Include="Graphics\Matrix.cs" />
-    <Compile Include="Graphics\Matrix2D.cs" />
-    <Compile Include="Graphics\Matrix3D.cs" />
+    <Compile Include="Graphics\Matrix1D.cs" />
+    <Compile Include="Graphics\Matrix4D.cs" />
     <Compile Include="Graphics\Polygon.cs" />
     <Compile Include="Graphics\Vertex.cs" />
     <Page Include="MainWindow.xaml">

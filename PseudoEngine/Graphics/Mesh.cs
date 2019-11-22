@@ -8,15 +8,18 @@ namespace PseudoEngine.Graphics
 {
     public class Mesh
     {
-        public Polygon[] Polygons { get; set; }
+        public Vertex[] Vertices { get; set; }
+        public Polygon[] Faces { get; set; }
 
-        public Mesh(int polygonCount)
+        public Mesh(int VertexCount, int FaceCount)
         {
-            Polygons = new Polygon[polygonCount];
+            Faces = new Polygon[FaceCount];
+            Vertices = new Vertex[VertexCount];
         }
-        public Mesh(Polygon[] polygons)
+        public Mesh(Vertex[] vertices, Polygon[] faces)
         {
-            Polygons = polygons;
+            Vertices = vertices;
+            Faces = faces;
         }
 
     }
