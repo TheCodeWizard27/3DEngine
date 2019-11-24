@@ -112,6 +112,7 @@ namespace PseudoEngine.core
                     translatedV2.X += screenMid.X; translatedV2.Y += screenMid.Y;
                     translatedV3.X += screenMid.X; translatedV3.Y += screenMid.Y;
 
+                    if (translatedV1.Z <= 0.1 || translatedV2.Z <= 0.1 || translatedV3.Z <= 0.1) continue;
                     try
                     {
                         g.DrawLine(whitePen, (float)translatedV1.X, (float)translatedV1.Y, (float)translatedV2.X, (float)translatedV2.Y);
