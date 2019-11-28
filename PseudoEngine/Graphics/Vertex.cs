@@ -8,9 +8,14 @@ namespace PseudoEngine.Graphics
 {
     public class Vertex
     {
+
+        #region Properties
+
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
+
+        #endregion
 
         #region Constructers
 
@@ -76,6 +81,11 @@ namespace PseudoEngine.Graphics
         public Vertex Clone()
         {
             return new Vertex(X, Y, Z);
+        }
+
+        public Vertex Reverse()
+        {
+            return Multiply(-1, -1, -1);
         }
 
         #endregion

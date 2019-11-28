@@ -16,6 +16,8 @@ namespace PseudoEngine.core
         public DispatcherTimer Clock { get; private set; }
         public HashSet<Key> Keybuffer = new HashSet<Key>();
 
+        public double YROT = 0;
+
         public delegate void Update();
         public event Update OnUpdate;
 
@@ -84,15 +86,30 @@ namespace PseudoEngine.core
             {
                 foreach(var face in mesh.Faces)
                 {
-                    var translatedV1 = Matrix1D.From(mesh.Vertices[face.Vertex1]).Multiply(transLationMat);
-                    var translatedV2 = Matrix1D.From(mesh.Vertices[face.Vertex2]).Multiply(transLationMat);
-                    var translatedV3 = Matrix1D.From(mesh.Vertices[face.Vertex3]).Multiply(transLationMat);
+                    var rotTest = Matrix4D.GetZRot(YROT);
+                    var scaleTest = Matrix4D.GetScale(800 / 2, 600 / 2, 1);
+
+                    var translatedV1 = Matrix1D.From(mesh.Vertices[face.Vertex1]);
+                    var translatedV2 = Matrix1D.From(mesh.Vertices[face.Vertex2]);
+                    var translatedV3 = Matrix1D.From(mesh.Vertices[face.Vertex3]);
+
+                    translatedV1.Multiply(rotTest);
+                    translatedV2.Multiply(rotTest);
+                    translatedV3.Multiply(rotTest);
+
+                    translatedV1.Multiply(scaleTest);
+                    translatedV2.Multiply(scaleTest);
+                    translatedV3.Multiply(scaleTest);
+
+                    translatedV1.Multiply(transLationMat);
+                    translatedV2.Multiply(transLationMat);
+                    translatedV3.Multiply(transLationMat);
 
                     translatedV1.Multiply(projectMat);
                     translatedV2.Multiply(projectMat);
                     translatedV3.Multiply(projectMat);
 
-                    if(translatedV1.Z != 0)
+                    if (translatedV1.Z != 0)
                     {
                         translatedV1.X /= translatedV1.Z;
                         translatedV1.Y /= translatedV1.Z;

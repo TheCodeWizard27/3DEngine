@@ -34,6 +34,12 @@ namespace PseudoEngine
             {
                 switch(key)
                 {
+                    case Key.Q:
+                        _engine.YROT -= 0.05;
+                        break;
+                    case Key.E:
+                        _engine.YROT += 0.05;
+                        break;
                     case Key.W:
                         _engine.Camera.Pos.Z += 0.05;
                         break;

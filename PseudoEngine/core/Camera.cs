@@ -10,6 +10,8 @@ namespace PseudoEngine.core
     public class Camera
     {
 
+        #region Properties
+
         public Vertex Pos { get; set; } = new Vertex(0, 0, -2);
         public Vertex Rot { get; set; } = new Vertex(0, 0, 0);
 
@@ -18,6 +20,8 @@ namespace PseudoEngine.core
         public double ZFar { get; set; } = 1000;
         public double Ratio { get; set; } = 1;
 
+        #endregion
+
         public Camera(int screenWidth, int screenHeight)
         {
             Ratio = screenWidth / screenHeight;
@@ -25,13 +29,14 @@ namespace PseudoEngine.core
 
         public Matrix4D GetTranslationMatrix()
         {
-            var temp = new Matrix4D(
+            /*var temp = new Matrix4D(
                     800/2, 0, 0, -Pos.X,
                     0, 600/2, 0, -Pos.Y,
                     0, 0, 1, -Pos.Z,
                     0, 0, 0, 1
-                );
-            return temp;
+                );*/
+            return Matrix4D.GetTranslation(Pos.Clone().Reverse());
+
         }
 
         public Matrix4D GetProjectionMatrix()

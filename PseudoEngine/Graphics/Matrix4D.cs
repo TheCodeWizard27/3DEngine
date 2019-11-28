@@ -8,31 +8,40 @@ namespace PseudoEngine.Graphics
 {
     public class Matrix4D
     {
+
+        #region Properties
+
         public double X1 { get; set; }
-        public double X2 { get; set; }
-        public double X3 { get; set; }
-        public double X4 { get; set; }
-
         public double Y1 { get; set; }
-        public double Y2 { get; set; }
-        public double Y3 { get; set; }
-        public double Y4 { get; set; }
-
         public double Z1 { get; set; }
-        public double Z2 { get; set; }
-        public double Z3 { get; set; }
-        public double Z4 { get; set; }
-
         public double R1 { get; set; }
+
+        public double X2 { get; set; }
+        public double Y2 { get; set; }
+        public double Z2 { get; set; }
         public double R2 { get; set; }
+
+        public double X3 { get; set; }
+        public double Y3 { get; set; }
+        public double Z3 { get; set; }
         public double R3 { get; set; }
+
+        public double X4 { get; set; }
+        public double Y4 { get; set; }
+        public double Z4 { get; set; }
         public double R4 { get; set; }
 
+        #endregion
+
+        #region Constructors
+
+        public Matrix4D() { }
+
         public Matrix4D(
-            double x1, double x2, double x3, double x4
-            , double y1, double y2, double y3, double y4
-            , double z1, double z2, double z3, double z4
-            , double r1, double r2, double r3, double r4)
+            double x1, double y1, double z1, double r1
+            , double x2, double y2, double z2, double r2
+            , double x3, double y3, double z3, double r3
+            , double x4, double y4, double z4, double r4)
         {
             X1 = x1;
             X2 = x2;
@@ -55,38 +64,115 @@ namespace PseudoEngine.Graphics
             R4 = r4;
         }
 
-        public Matrix4D Multiply(Matrix4D matrix3D)
+        #endregion
+
+        #region Static Methods
+
+        public static Matrix4D GetTranslation(Vertex vertex)
         {
-            X1 *= matrix3D.X1;
-            Y1 *= matrix3D.Y1;
-            Z1 *= matrix3D.Z1;
-            R1 *= matrix3D.R1;
+            return GetTranslation(vertex.X, vertex.Y, vertex.Z);
+        }
+        public static Matrix4D GetTranslation(double x, double y, double z)
+        {
+            return new Matrix4D(
+                    1, 0, 0, x,
+                    0, 1, 0, y,
+                    0, 0, 1, z,
+                    0, 0, 0, 1
+                );
+        }
 
-            X2 *= matrix3D.X2;
-            Y2 *= matrix3D.Y2;
-            Z2 *= matrix3D.Z2;
-            R2 *= matrix3D.R2;
+        public static Matrix4D GetScale(Vertex vertex)
+        {
+            return GetScale(vertex.X, vertex.Y, vertex.Z);
+        }
+        public static Matrix4D GetScale(double x, double y, double z)
+        {
+            return new Matrix4D(
+                    x, 0, 0, 0,
+                    0, y, 0, 0,
+                    0, 0, z, 0,
+                    0, 0, 0, 1
+                );
+        }
 
-            X3 *= matrix3D.X3;
-            Y3 *= matrix3D.Y3;
-            Z3 *= matrix3D.Z3;
-            R3 *= matrix3D.R3;
+        public static Matrix4D GetXRot(double x)
+        {
+            var cos = Math.Cos(x);
+            var sin = Math.Sin(x);
 
-            X4 *= matrix3D.X4;
-            Y4 *= matrix3D.Y4;
-            Z4 *= matrix3D.Z4;
-            R4 *= matrix3D.R4;
+            return new Matrix4D(
+                1, 0, 0, 0,
+                0, cos, sin, 0,
+                0, -sin, cos, 0,
+                0, 0, 0, 1
+                );
+        }
+
+        public static Matrix4D GetYRot(double y)
+        {
+            var cos = Math.Cos(y);
+            var sin = Math.Sin(y);
+
+            return new Matrix4D(
+                 cos, 0, sin, 0,
+                   0, 1, 0, 0,
+                -sin, 0, cos, 0,
+                   0, 0, 0, 1
+                );
+        }
+
+        public static Matrix4D GetZRot(double z)
+        {
+            var cos = Math.Cos(z);
+            var sin = Math.Sin(z);
+
+            return new Matrix4D(
+                cos, -sin, 0, 0,
+                sin, cos, 0, 0,
+                  0, 0, 1, 0,
+                  0, 0, 0, 1
+                );
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public Matrix4D Multiply(Matrix4D mat)
+        {
+            X1 = X1*mat.X1 + Y1*mat.X2 + Z1*mat.X3 + R1*mat.X4;
+            Y1 = X1*mat.Y1 + Y1*mat.Y2 + Z1*mat.Y3 + R1*mat.Y4;
+            Z1 = X1*mat.Z1 + Y1*mat.Z2 + Z1*mat.Z3 + R1*mat.Z4;
+            R1 = X1*mat.R1 + Y1*mat.R2 + Z1*mat.R3 + R1*mat.R4;
+                       
+            X2 = X2*mat.X1 + Y2*mat.X2 + Z2*mat.X3 + R2*mat.X4;
+            Y2 = X2*mat.Y1 + Y2*mat.Y2 + Z2*mat.Y3 + R2*mat.Y4;
+            Z2 = X2*mat.Z1 + Y2*mat.Z2 + Z2*mat.Z3 + R2*mat.Z4;
+            R2 = X2*mat.R1 + Y2*mat.R2 + Z2*mat.R3 + R2*mat.R4;
+                       
+            X3 = X3*mat.X1 + Y3*mat.X2 + Z3*mat.X3 + R3*mat.X4;
+            Y3 = X3*mat.Y1 + Y3*mat.Y2 + Z3*mat.Y3 + R3*mat.Y4;
+            Z3 = X3*mat.Z1 + Y3*mat.Z2 + Z3*mat.Z3 + R3*mat.Z4;
+            R3 = X3*mat.R1 + Y3*mat.R2 + Z3*mat.R3 + R3*mat.R4;
+                       
+            X4 = X4*mat.X1 + Y4*mat.X2 + Z4*mat.X3 + R4*mat.X4;
+            Y4 = X4*mat.Y1 + Y4*mat.Y2 + Z4*mat.Y3 + R4*mat.Y4;
+            Z4 = X4*mat.Z1 + Y4*mat.Z2 + Z4*mat.Z3 + R4*mat.Z4;
+            R4 = X4*mat.R1 + Y4*mat.R2 + Z4*mat.R3 + R4*mat.R4;
             return this;
         }
-
-
+        
         public Matrix1D Multiply(Matrix1D mat)
         {
-            mat.X = X1 * mat.X + X2 * mat.Y + X3 * mat.Z + X4 * mat.R;
-            mat.Y = Y1 * mat.X + Y2 * mat.Y + Y3 * mat.Z + Y4 * mat.R;
-            mat.Z = Z1 * mat.X + Z2 * mat.Y + Z3 * mat.Z + Z4 * mat.R;
-            mat.R = R1 * mat.X + R2 * mat.Y + R3 * mat.Z + R4 * mat.R;
+            mat.X = X1 * mat.X + Y1 * mat.Y + Z1 * mat.Z + R1 * mat.R;
+            mat.Y = X2 * mat.X + Y2 * mat.Y + Z2 * mat.Z + R2 * mat.R;
+            mat.Z = X3 * mat.X + Y3 * mat.Y + Z3 * mat.Z + R3 * mat.R;
+            mat.R = X4 * mat.X + Y4 * mat.Y + Z4 * mat.Z + R4 * mat.R;
             return mat;
         }
+
+        #endregion
+
     }
 }
