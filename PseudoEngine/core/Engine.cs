@@ -11,7 +11,7 @@ namespace PseudoEngine.core
     public class Engine
     {
         public readonly List<Mesh> Meshes = new List<Mesh>();
-        public readonly Camera Camera = new Camera(800, 600);
+        public readonly Camera Camera = new Camera(800, 800);
 
         public DispatcherTimer Clock { get; private set; }
         public HashSet<Key> Keybuffer = new HashSet<Key>();
@@ -71,6 +71,8 @@ namespace PseudoEngine.core
 
         public void Draw(System.Drawing.Graphics graphics)
         {
+            var rnd = new Random(15);
+
             var whitePen = new Pen(Color.White, 1);
             var screenMid = new Vertex(800 / 2, 600 / 2, 0);
             var projectMat = Camera.GetProjectionMatrix();
@@ -86,7 +88,8 @@ namespace PseudoEngine.core
             {
                 foreach(var face in mesh.Faces)
                 {
-                    var rotTest = Matrix4D.GetZRot(YROT);
+                    var rotTest = Matrix4D.GetXRot((3.14159 * YROT) / 180);
+                    Console.WriteLine(YROT);
                     var scaleTest = Matrix4D.GetScale(800 / 2, 600 / 2, 1);
 
                     var translatedV1 = Matrix1D.From(mesh.Vertices[face.Vertex1]);
@@ -130,21 +133,23 @@ namespace PseudoEngine.core
                     translatedV3.X += screenMid.X; translatedV3.Y += screenMid.Y;
 
                     if (translatedV1.Z <= 0.1 || translatedV2.Z <= 0.1 || translatedV3.Z <= 0.1) continue;
-                    try
-                    {
-                        g.DrawLine(whitePen, (float)translatedV1.X, (float)translatedV1.Y, (float)translatedV2.X, (float)translatedV2.Y);
-                        g.DrawLine(whitePen, (float)translatedV2.X, (float)translatedV2.Y, (float)translatedV3.X, (float)translatedV3.Y);
-                        g.DrawLine(whitePen, (float)translatedV3.X, (float)translatedV3.Y, (float)translatedV1.X, (float)translatedV1.Y);
-                    }
-                    catch (Exception)
-                    {
 
-                    }
-
+                    g.DrawLine(whitePen, (float)translatedV1.X, (float)translatedV1.Y, (float)translatedV2.X, (float)translatedV2.Y);
+                    g.DrawLine(whitePen, (float)translatedV2.X, (float)translatedV2.Y, (float)translatedV3.X, (float)translatedV3.Y);
+                    g.DrawLine(whitePen, (float)translatedV3.X, (float)translatedV3.Y, (float)translatedV1.X, (float)translatedV1.Y);
+                    g.FillPolygon(
+                        new SolidBrush(Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255), 255)), new PointF[]{
+                        new PointF((float)translatedV1.X, (float)translatedV1.Y),
+                        new PointF((float)translatedV2.X, (float)translatedV2.Y),
+                        new PointF((float)translatedV3.X, (float)translatedV3.Y)
+                    });
                     /*
-                    SetPixel(bufferedImage.Bitmap, (int)translatedV1.X, (int)translatedV1.Y);
-                    SetPixel(bufferedImage.Bitmap, (int)translatedV2.X, (int)translatedV2.Y);
-                    SetPixel(bufferedImage.Bitmap, (int)translatedV3.X, (int)translatedV3.Y);
+                    g.DrawPolygon(
+                        new Pen(Color.FromArgb(rnd.Next(0,255),rnd.Next(0,255),rnd.Next(0,255), 255)), new Point[]{
+                        new Point((int)translatedV1.X, (int)translatedV1.Y),
+                        new Point((int)translatedV2.X, (int)translatedV2.Y),
+                        new Point((int)translatedV3.X, (int)translatedV3.Y)
+                    });
                     */
                 }
             }

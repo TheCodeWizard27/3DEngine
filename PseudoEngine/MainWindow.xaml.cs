@@ -29,16 +29,16 @@ namespace PseudoEngine
 
         private void Engine_OnUpdate()
         {
-            Console.WriteLine("[" + string.Join(",",_engine.Keybuffer.ToList()) + "]");
+            //Console.WriteLine("[" + string.Join(",",_engine.Keybuffer.ToList()) + "]");
             foreach(var key in _engine.Keybuffer)
             {
                 switch(key)
                 {
                     case Key.Q:
-                        _engine.YROT -= 0.05;
+                        _engine.YROT -=5;
                         break;
                     case Key.E:
-                        _engine.YROT += 0.05;
+                        _engine.YROT += 5;
                         break;
                     case Key.W:
                         _engine.Camera.Pos.Z += 0.05;

@@ -98,6 +98,7 @@ namespace PseudoEngine.Graphics
 
         public static Matrix4D GetXRot(double x)
         {
+            x = (Math.PI * 90) / 180;
             var cos = Math.Cos(x);
             var sin = Math.Sin(x);
 

@@ -22,7 +22,7 @@ namespace PseudoEngine.core
 
         #endregion
 
-        public Camera(int screenWidth, int screenHeight)
+        public Camera(double screenWidth, double screenHeight)
         {
             Ratio = screenWidth / screenHeight;
         }
