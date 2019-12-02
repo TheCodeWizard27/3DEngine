@@ -88,9 +88,10 @@ namespace PseudoEngine.core
             {
                 foreach(var face in mesh.Faces)
                 {
-                    var rotTest = Matrix4D.GetXRot((3.14159 * YROT) / 180);
+                    var rotTest = Matrix4D.GetXRot((Math.PI * YROT) / 180);
+                    rotTest.Multiply(Matrix4D.GetYRot((Math.PI * YROT) / 180));
                     Console.WriteLine(YROT);
-                    var scaleTest = Matrix4D.GetScale(800 / 2, 600 / 2, 1);
+                    var scaleTest = Matrix4D.GetScale(600 / 2, 600 / 2, 600 / 1000);
 
                     var translatedV1 = Matrix1D.From(mesh.Vertices[face.Vertex1]);
                     var translatedV2 = Matrix1D.From(mesh.Vertices[face.Vertex2]);
@@ -137,6 +138,7 @@ namespace PseudoEngine.core
                     g.DrawLine(whitePen, (float)translatedV1.X, (float)translatedV1.Y, (float)translatedV2.X, (float)translatedV2.Y);
                     g.DrawLine(whitePen, (float)translatedV2.X, (float)translatedV2.Y, (float)translatedV3.X, (float)translatedV3.Y);
                     g.DrawLine(whitePen, (float)translatedV3.X, (float)translatedV3.Y, (float)translatedV1.X, (float)translatedV1.Y);
+
                     g.FillPolygon(
                         new SolidBrush(Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255), 255)), new PointF[]{
                         new PointF((float)translatedV1.X, (float)translatedV1.Y),

@@ -16,7 +16,7 @@ namespace PseudoEngine.core
         public Vertex Rot { get; set; } = new Vertex(0, 0, 0);
 
         public double FovAngle { get; set; } = 90;
-        public double ZNear { get; set; } = 0.1;
+        public double ZNear { get; set; } = 1;
         public double ZFar { get; set; } = 1000;
         public double Ratio { get; set; } = 1;
 
