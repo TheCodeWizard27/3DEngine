@@ -1,4 +1,5 @@
 ﻿using PseudoEngine.core;
+using PseudoEngine.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace PseudoEngine
                 switch(key)
                 {
                     case Key.Q:
-                        _engine.YROT -=5;
+                        _engine.YROT -= 5;
                         break;
                     case Key.E:
                         _engine.YROT += 5;

@@ -46,8 +46,8 @@ namespace PseudoEngine.core
             return new Matrix4D(
                     Ratio*distFactor, 0, 0, 0,
                     0, distFactor, 0, 0,
-                    0, 0, ZFar / (ZFar-ZNear), (-ZFar*ZNear)/(ZFar-ZNear),
-                    0, 0, 0, 1
+                    0, 0, ZFar / (ZFar-ZNear), -1,
+                    0, 0, (-ZFar * ZNear) / (ZFar - ZNear), 0
                 );
         }
 

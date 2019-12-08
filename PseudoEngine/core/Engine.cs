@@ -89,17 +89,28 @@ namespace PseudoEngine.core
                 foreach(var face in mesh.Faces)
                 {
                     var rotTest = Matrix4D.GetXRot((Math.PI * YROT) / 180);
-                    rotTest.Multiply(Matrix4D.GetYRot((Math.PI * YROT) / 180));
+                    var rotTest2 = Matrix4D.GetYRot((Math.PI * (YROT / 2)) / 180);
                     Console.WriteLine(YROT);
-                    var scaleTest = Matrix4D.GetScale(600 / 2, 600 / 2, 600 / 1000);
+                    var scaleTest = Matrix4D.GetScale(600 / 2, 600 / 2, 1);
+
+                    var temp = face.Vertex1;
 
                     var translatedV1 = Matrix1D.From(mesh.Vertices[face.Vertex1]);
                     var translatedV2 = Matrix1D.From(mesh.Vertices[face.Vertex2]);
                     var translatedV3 = Matrix1D.From(mesh.Vertices[face.Vertex3]);
 
-                    translatedV1.Multiply(rotTest);
-                    translatedV2.Multiply(rotTest);
-                    translatedV3.Multiply(rotTest);
+                    translatedV1.Multiply(rotTest2);
+                    translatedV2.Multiply(rotTest2);
+                    translatedV3.Multiply(rotTest2);
+
+                    var test1 = translatedV1.Multiply(rotTest).Clone();
+                    var test2 = translatedV2.Multiply(rotTest).Clone();
+                    var test3 = translatedV3.Multiply(rotTest).Clone();
+
+                    /*
+                    Console.WriteLine(translatedV1);
+                    Console.WriteLine(rotTest);
+                    */
 
                     translatedV1.Multiply(scaleTest);
                     translatedV2.Multiply(scaleTest);
@@ -108,7 +119,7 @@ namespace PseudoEngine.core
                     translatedV1.Multiply(transLationMat);
                     translatedV2.Multiply(transLationMat);
                     translatedV3.Multiply(transLationMat);
-
+                   
                     translatedV1.Multiply(projectMat);
                     translatedV2.Multiply(projectMat);
                     translatedV3.Multiply(projectMat);
@@ -138,6 +149,10 @@ namespace PseudoEngine.core
                     g.DrawLine(whitePen, (float)translatedV1.X, (float)translatedV1.Y, (float)translatedV2.X, (float)translatedV2.Y);
                     g.DrawLine(whitePen, (float)translatedV2.X, (float)translatedV2.Y, (float)translatedV3.X, (float)translatedV3.Y);
                     g.DrawLine(whitePen, (float)translatedV3.X, (float)translatedV3.Y, (float)translatedV1.X, (float)translatedV1.Y);
+
+                    g.DrawString($"{Math.Round(test1.X, 3)},{Math.Round(test1.Y, 3)},{Math.Round(test1.Z, 3)}", new Font(FontFamily.GenericSansSerif, 14), Brushes.Cyan, (float)translatedV1.X, (float)translatedV1.Y);
+                    g.DrawString($"{Math.Round(test2.X, 3)},{Math.Round(test2.Y, 3)},{Math.Round(test2.Z, 3)}", new Font(FontFamily.GenericSansSerif, 14), Brushes.Cyan, (float)translatedV2.X, (float)translatedV2.Y);
+                    g.DrawString($"{Math.Round(test3.X, 3)},{Math.Round(test3.Y, 3)},{Math.Round(test3.Z, 3)}", new Font(FontFamily.GenericSansSerif, 14), Brushes.Cyan, (float)translatedV3.X, (float)translatedV3.Y);
 
                     g.FillPolygon(
                         new SolidBrush(Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255), 255)), new PointF[]{

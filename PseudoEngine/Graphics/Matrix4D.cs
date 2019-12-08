@@ -103,8 +103,8 @@ namespace PseudoEngine.Graphics
 
             return new Matrix4D(
                 1, 0, 0, 0,
-                0, cos, -sin, 0,
-                0, sin, cos, 0,
+                0, cos, sin, 0,
+                0, -sin, cos, 0,
                 0, 0, 0, 1
                 );
         }
@@ -115,9 +115,9 @@ namespace PseudoEngine.Graphics
             var sin = Math.Sin(y);
 
             return new Matrix4D(
-                 cos, 0, sin, 0,
+                 cos, 0, -sin, 0,
                    0, 1, 0, 0,
-                -sin, 0, cos, 0,
+                 sin, 0, cos, 0,
                    0, 0, 0, 1
                 );
         }
@@ -128,8 +128,8 @@ namespace PseudoEngine.Graphics
             var sin = Math.Sin(z);
 
             return new Matrix4D(
-                cos, -sin, 0, 0,
-                sin, cos, 0, 0,
+                cos, sin, 0, 0,
+                -sin, cos, 0, 0,
                   0, 0, 1, 0,
                   0, 0, 0, 1
                 );
@@ -165,14 +165,24 @@ namespace PseudoEngine.Graphics
         
         public Matrix1D Multiply(Matrix1D mat)
         {
-            mat.X = X1 * mat.X + Y1 * mat.Y + Z1 * mat.Z + R1 * mat.R;
-            mat.Y = X2 * mat.X + Y2 * mat.Y + Z2 * mat.Z + R2 * mat.R;
-            mat.Z = X3 * mat.X + Y3 * mat.Y + Z3 * mat.Z + R3 * mat.R;
-            mat.R = X4 * mat.X + Y4 * mat.Y + Z4 * mat.Z + R4 * mat.R;
+            var x = X1 * mat.X + Y1 * mat.Y + Z1 * mat.Z + R1 * mat.R;
+            var y = X2 * mat.X + Y2 * mat.Y + Z2 * mat.Z + R2 * mat.R;
+            var z = X3 * mat.X + Y3 * mat.Y + Z3 * mat.Z + R3 * mat.R;
+            var r = X4 * mat.X + Y4 * mat.Y + Z4 * mat.Z + R4 * mat.R;
+
+            mat.X = x;
+            mat.Y = y;
+            mat.Z = z;
+            mat.R = r;
+
             return mat;
         }
 
         #endregion
 
+        override public string ToString()
+        {
+            return $"{X1},{Y1},{Z1},{R1}\n{X2},{Y2},{Z2},{R2}\n{X3},{Y3},{Z3},{R3}\n{X4},{Y4},{Z4},{R4}";
+        }
     }
 }
