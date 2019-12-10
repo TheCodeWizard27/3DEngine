@@ -90,7 +90,7 @@ namespace PseudoEngine.core
                 {
                     var rotTest = Matrix4D.GetXRot((Math.PI * YROT) / 180);
                     var rotTest2 = Matrix4D.GetYRot((Math.PI * (YROT / 2)) / 180);
-                    Console.WriteLine(YROT);
+
                     var scaleTest = Matrix4D.GetScale(600 / 2, 600 / 2, 1);
 
                     var temp = face.Vertex1;
@@ -99,67 +99,72 @@ namespace PseudoEngine.core
                     var translatedV2 = Matrix1D.From(mesh.Vertices[face.Vertex2]);
                     var translatedV3 = Matrix1D.From(mesh.Vertices[face.Vertex3]);
 
-                    translatedV1.Multiply(rotTest2);
-                    translatedV2.Multiply(rotTest2);
-                    translatedV3.Multiply(rotTest2);
+                    translatedV1 = translatedV1.Multiply(rotTest2);
+                    translatedV2 = translatedV2.Multiply(rotTest2);
+                    translatedV3 = translatedV3.Multiply(rotTest2);
 
-                    var test1 = translatedV1.Multiply(rotTest).Clone();
-                    var test2 = translatedV2.Multiply(rotTest).Clone();
-                    var test3 = translatedV3.Multiply(rotTest).Clone();
+                    var test1 = translatedV1 = translatedV1.Multiply(rotTest);
+                    var test2 = translatedV2 = translatedV2.Multiply(rotTest);
+                    var test3 = translatedV3 = translatedV3.Multiply(rotTest);
 
                     /*
                     Console.WriteLine(translatedV1);
                     Console.WriteLine(rotTest);
                     */
 
-                    translatedV1.Multiply(scaleTest);
-                    translatedV2.Multiply(scaleTest);
-                    translatedV3.Multiply(scaleTest);
+                    translatedV1 = translatedV1.Multiply(scaleTest);
+                    translatedV2 = translatedV2.Multiply(scaleTest);
+                    translatedV3 = translatedV3.Multiply(scaleTest);
 
-                    translatedV1.Multiply(transLationMat);
-                    translatedV2.Multiply(transLationMat);
-                    translatedV3.Multiply(transLationMat);
+                    translatedV1 = translatedV1.Multiply(transLationMat);
+                    translatedV2 = translatedV2.Multiply(transLationMat);
+                    translatedV3 = translatedV3.Multiply(transLationMat);
                    
-                    translatedV1.Multiply(projectMat);
-                    translatedV2.Multiply(projectMat);
-                    translatedV3.Multiply(projectMat);
+                    translatedV1 = translatedV1.Multiply(projectMat);
+                    translatedV2 = translatedV2.Multiply(projectMat);
+                    translatedV3 = translatedV3.Multiply(projectMat);
+
+                    var resultV1 = Vertex.From(translatedV1);
+                    var resultV2 = Vertex.From(translatedV2);
+                    var resultV3 = Vertex.From(translatedV3);
 
                     if (translatedV1.Z != 0)
                     {
-                        translatedV1.X /= translatedV1.Z;
-                        translatedV1.Y /= translatedV1.Z;
+                        resultV1.X /= translatedV1.Z;
+                        resultV1.Y /= translatedV1.Z;
                     }
                     if(translatedV2.Z != 0)
                     {
-                        translatedV2.X /= translatedV2.Z;
-                        translatedV2.Y /= translatedV2.Z;
+                        resultV2.X /= translatedV2.Z;
+                        resultV2.Y /= translatedV2.Z;
                     }
                     if (translatedV3.Z != 0)
                     {
-                        translatedV3.X /= translatedV3.Z;
-                        translatedV3.Y /= translatedV3.Z;
+                        resultV3.X /= translatedV3.Z;
+                        resultV3.Y /= translatedV3.Z;
                     }
 
-                    translatedV1.X += screenMid.X; translatedV1.Y += screenMid.Y;
-                    translatedV2.X += screenMid.X; translatedV2.Y += screenMid.Y;
-                    translatedV3.X += screenMid.X; translatedV3.Y += screenMid.Y;
+                    resultV1.X += screenMid.X; resultV1.Y += screenMid.Y;
+                    resultV2.X += screenMid.X; resultV2.Y += screenMid.Y;
+                    resultV3.X += screenMid.X; resultV3.Y += screenMid.Y;
 
-                    if (translatedV1.Z <= 0.1 || translatedV2.Z <= 0.1 || translatedV3.Z <= 0.1) continue;
+                    if (resultV1.Z <= 0.1 || resultV2.Z <= 0.1 || resultV3.Z <= 0.1) continue;
 
-                    g.DrawLine(whitePen, (float)translatedV1.X, (float)translatedV1.Y, (float)translatedV2.X, (float)translatedV2.Y);
-                    g.DrawLine(whitePen, (float)translatedV2.X, (float)translatedV2.Y, (float)translatedV3.X, (float)translatedV3.Y);
-                    g.DrawLine(whitePen, (float)translatedV3.X, (float)translatedV3.Y, (float)translatedV1.X, (float)translatedV1.Y);
+                    g.DrawLine(whitePen, (float)resultV1.X, (float)resultV1.Y, (float)resultV2.X, (float)resultV2.Y);
+                    g.DrawLine(whitePen, (float)resultV2.X, (float)resultV2.Y, (float)resultV3.X, (float)resultV3.Y);
+                    g.DrawLine(whitePen, (float)resultV3.X, (float)resultV3.Y, (float)resultV1.X, (float)resultV1.Y);
 
-                    g.DrawString($"{Math.Round(test1.X, 3)},{Math.Round(test1.Y, 3)},{Math.Round(test1.Z, 3)}", new Font(FontFamily.GenericSansSerif, 14), Brushes.Cyan, (float)translatedV1.X, (float)translatedV1.Y);
-                    g.DrawString($"{Math.Round(test2.X, 3)},{Math.Round(test2.Y, 3)},{Math.Round(test2.Z, 3)}", new Font(FontFamily.GenericSansSerif, 14), Brushes.Cyan, (float)translatedV2.X, (float)translatedV2.Y);
-                    g.DrawString($"{Math.Round(test3.X, 3)},{Math.Round(test3.Y, 3)},{Math.Round(test3.Z, 3)}", new Font(FontFamily.GenericSansSerif, 14), Brushes.Cyan, (float)translatedV3.X, (float)translatedV3.Y);
+                    g.DrawString($"{Math.Round(test1.X, 3)},{Math.Round(test1.Y, 3)},{Math.Round(test1.Z, 3)}", new Font(FontFamily.GenericSansSerif, 14), Brushes.Cyan, (float)resultV1.X, (float)resultV1.Y);
+                    g.DrawString($"{Math.Round(test2.X, 3)},{Math.Round(test2.Y, 3)},{Math.Round(test2.Z, 3)}", new Font(FontFamily.GenericSansSerif, 14), Brushes.Cyan, (float)resultV2.X, (float)resultV2.Y);
+                    g.DrawString($"{Math.Round(test3.X, 3)},{Math.Round(test3.Y, 3)},{Math.Round(test3.Z, 3)}", new Font(FontFamily.GenericSansSerif, 14), Brushes.Cyan, (float)resultV3.X, (float)resultV3.Y);
 
                     g.FillPolygon(
                         new SolidBrush(Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255), 255)), new PointF[]{
-                        new PointF((float)translatedV1.X, (float)translatedV1.Y),
-                        new PointF((float)translatedV2.X, (float)translatedV2.Y),
-                        new PointF((float)translatedV3.X, (float)translatedV3.Y)
+                        new PointF((float)resultV1.X, (float)resultV1.Y),
+                        new PointF((float)resultV2.X, (float)resultV2.Y),
+                        new PointF((float)resultV3.X, (float)resultV3.Y)
                     });
+
                     /*
                     g.DrawPolygon(
                         new Pen(Color.FromArgb(rnd.Next(0,255),rnd.Next(0,255),rnd.Next(0,255), 255)), new Point[]{

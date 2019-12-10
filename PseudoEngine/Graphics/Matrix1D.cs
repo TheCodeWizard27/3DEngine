@@ -12,10 +12,10 @@ namespace PseudoEngine.Graphics
 
         #region Properties
 
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Z { get; set; }
-        public double R { get; set; }
+        public double X { get; private set; }
+        public double Y { get; private set; }
+        public double Z { get; private set; }
+        public double R { get; private set; }
 
         #endregion
 
@@ -45,22 +45,13 @@ namespace PseudoEngine.Graphics
 
         public Matrix1D Multiply(Matrix4D mat)
         {
-            
-            var x = (mat.X1 * X) + (mat.Y1 * Y) + (mat.Z1 * Z) + (mat.R1 * R);
-            var y = (mat.X2 * X) + (mat.Y2 * Y) + (mat.Z2 * Z) + (mat.R2 * R);
-            var z = (mat.X3 * X) + (mat.Y3 * Y) + (mat.Z3 * Z) + (mat.R3 * R);
-            var r = (mat.X4 * X) + (mat.Y4 * Y) + (mat.Z4 * Z) + (mat.R4 * R);
-            
-            /*
-            var x = mat.X1 * X + mat.X2 * Y + mat.X3 * Z + mat.X4 * R;
-            var y = mat.Y1 * X + mat.Y2 * Y + mat.Y3 * Z + mat.Y4 * R;
-            var z = mat.Z1 * X + mat.Z2 * Y + mat.Z3 * Z + mat.Z4 * R;
-            var r = mat.R1 * X + mat.R2 * Y + mat.R3 * Z + mat.R4 * R;
-            */
-
-            X = x; Y = y; Z = z; R = r;
-
-            return this;
+            return new Matrix1D()
+            {
+                X = (mat.X1 * X) + (mat.Y1 * Y) + (mat.Z1 * Z) + (mat.R1 * R),
+                Y = (mat.X2 * X) + (mat.Y2 * Y) + (mat.Z2 * Z) + (mat.R2 * R),
+                Z = (mat.X3 * X) + (mat.Y3 * Y) + (mat.Z3 * Z) + (mat.R3 * R),
+                R = (mat.X4 * X) + (mat.Y4 * Y) + (mat.Z4 * Z) + (mat.R4 * R)
+            };
         }
 
         override public string ToString()

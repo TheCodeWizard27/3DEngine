@@ -11,25 +11,25 @@ namespace PseudoEngine.Graphics
 
         #region Properties
 
-        public double X1 { get; set; }
-        public double Y1 { get; set; }
-        public double Z1 { get; set; }
-        public double R1 { get; set; }
+        public double X1 { get; private set; }
+        public double Y1 { get; private set; }
+        public double Z1 { get; private set; }
+        public double R1 { get; private set; }
 
-        public double X2 { get; set; }
-        public double Y2 { get; set; }
-        public double Z2 { get; set; }
-        public double R2 { get; set; }
+        public double X2 { get; private set; }
+        public double Y2 { get; private set; }
+        public double Z2 { get; private set; }
+        public double R2 { get; private set; }
 
-        public double X3 { get; set; }
-        public double Y3 { get; set; }
-        public double Z3 { get; set; }
-        public double R3 { get; set; }
+        public double X3 { get; private set; }
+        public double Y3 { get; private set; }
+        public double Z3 { get; private set; }
+        public double R3 { get; private set; }
 
-        public double X4 { get; set; }
-        public double Y4 { get; set; }
-        public double Z4 { get; set; }
-        public double R4 { get; set; }
+        public double X4 { get; private set; }
+        public double Y4 { get; private set; }
+        public double Z4 { get; private set; }
+        public double R4 { get; private set; }
 
         #endregion
 
@@ -141,41 +141,38 @@ namespace PseudoEngine.Graphics
 
         public Matrix4D Multiply(Matrix4D mat)
         {
-            X1 = X1*mat.X1 + Y1*mat.X2 + Z1*mat.X3 + R1*mat.X4;
-            Y1 = X1*mat.Y1 + Y1*mat.Y2 + Z1*mat.Y3 + R1*mat.Y4;
-            Z1 = X1*mat.Z1 + Y1*mat.Z2 + Z1*mat.Z3 + R1*mat.Z4;
-            R1 = X1*mat.R1 + Y1*mat.R2 + Z1*mat.R3 + R1*mat.R4;
-                       
-            X2 = X2*mat.X1 + Y2*mat.X2 + Z2*mat.X3 + R2*mat.X4;
-            Y2 = X2*mat.Y1 + Y2*mat.Y2 + Z2*mat.Y3 + R2*mat.Y4;
-            Z2 = X2*mat.Z1 + Y2*mat.Z2 + Z2*mat.Z3 + R2*mat.Z4;
-            R2 = X2*mat.R1 + Y2*mat.R2 + Z2*mat.R3 + R2*mat.R4;
-                       
-            X3 = X3*mat.X1 + Y3*mat.X2 + Z3*mat.X3 + R3*mat.X4;
-            Y3 = X3*mat.Y1 + Y3*mat.Y2 + Z3*mat.Y3 + R3*mat.Y4;
-            Z3 = X3*mat.Z1 + Y3*mat.Z2 + Z3*mat.Z3 + R3*mat.Z4;
-            R3 = X3*mat.R1 + Y3*mat.R2 + Z3*mat.R3 + R3*mat.R4;
-                       
-            X4 = X4*mat.X1 + Y4*mat.X2 + Z4*mat.X3 + R4*mat.X4;
-            Y4 = X4*mat.Y1 + Y4*mat.Y2 + Z4*mat.Y3 + R4*mat.Y4;
-            Z4 = X4*mat.Z1 + Y4*mat.Z2 + Z4*mat.Z3 + R4*mat.Z4;
-            R4 = X4*mat.R1 + Y4*mat.R2 + Z4*mat.R3 + R4*mat.R4;
-            return this;
+            return new Matrix4D()
+            {
+                X1 = X1 * mat.X1 + Y1 * mat.X2 + Z1 * mat.X3 + R1 * mat.X4,
+                Y1 = X1 * mat.Y1 + Y1 * mat.Y2 + Z1 * mat.Y3 + R1 * mat.Y4,
+                Z1 = X1 * mat.Z1 + Y1 * mat.Z2 + Z1 * mat.Z3 + R1 * mat.Z4,
+                R1 = X1 * mat.R1 + Y1 * mat.R2 + Z1 * mat.R3 + R1 * mat.R4,
+                                                                          
+                X2 = X2 * mat.X1 + Y2 * mat.X2 + Z2 * mat.X3 + R2 * mat.X4,
+                Y2 = X2 * mat.Y1 + Y2 * mat.Y2 + Z2 * mat.Y3 + R2 * mat.Y4,
+                Z2 = X2 * mat.Z1 + Y2 * mat.Z2 + Z2 * mat.Z3 + R2 * mat.Z4,
+                R2 = X2 * mat.R1 + Y2 * mat.R2 + Z2 * mat.R3 + R2 * mat.R4,
+                                                                          
+                X3 = X3 * mat.X1 + Y3 * mat.X2 + Z3 * mat.X3 + R3 * mat.X4,
+                Y3 = X3 * mat.Y1 + Y3 * mat.Y2 + Z3 * mat.Y3 + R3 * mat.Y4,
+                Z3 = X3 * mat.Z1 + Y3 * mat.Z2 + Z3 * mat.Z3 + R3 * mat.Z4,
+                R3 = X3 * mat.R1 + Y3 * mat.R2 + Z3 * mat.R3 + R3 * mat.R4,
+                                                                          
+                X4 = X4 * mat.X1 + Y4 * mat.X2 + Z4 * mat.X3 + R4 * mat.X4,
+                Y4 = X4 * mat.Y1 + Y4 * mat.Y2 + Z4 * mat.Y3 + R4 * mat.Y4,
+                Z4 = X4 * mat.Z1 + Y4 * mat.Z2 + Z4 * mat.Z3 + R4 * mat.Z4,
+                R4 = X4 * mat.R1 + Y4 * mat.R2 + Z4 * mat.R3 + R4 * mat.R4
+            };
         }
         
         public Matrix1D Multiply(Matrix1D mat)
         {
-            var x = X1 * mat.X + Y1 * mat.Y + Z1 * mat.Z + R1 * mat.R;
-            var y = X2 * mat.X + Y2 * mat.Y + Z2 * mat.Z + R2 * mat.R;
-            var z = X3 * mat.X + Y3 * mat.Y + Z3 * mat.Z + R3 * mat.R;
-            var r = X4 * mat.X + Y4 * mat.Y + Z4 * mat.Z + R4 * mat.R;
-
-            mat.X = x;
-            mat.Y = y;
-            mat.Z = z;
-            mat.R = r;
-
-            return mat;
+            return new Matrix1D(
+                X1 * mat.X + Y1 * mat.Y + Z1 * mat.Z + R1 * mat.R,
+                X2 * mat.X + Y2 * mat.Y + Z2 * mat.Z + R2 * mat.R,
+                X3 * mat.X + Y3 * mat.Y + Z3 * mat.Z + R3 * mat.R,
+                X4 * mat.X + Y4 * mat.Y + Z4 * mat.Z + R4 * mat.R
+                );
         }
 
         #endregion
