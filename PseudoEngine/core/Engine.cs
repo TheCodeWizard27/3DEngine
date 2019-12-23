@@ -32,30 +32,8 @@ namespace PseudoEngine.core
 
         public void Init()
         {
-            Meshes.Add(new Mesh(
-                vertices: new Vertex[]
-                {
-                    new Vertex(-0.5, -0.5, -0.5), new Vertex(-0.5, 0.5, -0.5),
-                    new Vertex(0.5, -0.5, -0.5), new Vertex(0.5, 0.5, -0.5),
-                    new Vertex(-0.5, -0.5, 0.5), new Vertex(-0.5, 0.5, 0.5),
-                    new Vertex(0.5, -0.5, 0.5), new Vertex(0.5, 0.5, 0.5)
-                },
-                faces: new Polygon[]
-                {
-                    // Front Faces
-                    new Polygon(0, 1, 3), new Polygon(3, 2, 0),
-                    // Back Faces
-                    new Polygon(4, 5, 7), new Polygon(7, 6, 4),
-                    // Left Faces
-                    new Polygon(4, 5, 1), new Polygon(1, 0, 4),
-                    // Right Faces
-                    new Polygon(2, 3, 7), new Polygon(7, 6, 2),
-                    // Bottom Faces
-                    new Polygon(0, 4, 6), new Polygon(6, 2, 0),
-                    // Top Faces
-                    new Polygon(1, 5, 7), new Polygon(7, 3, 1)
-                }
-                ));
+            var file = "/Graphics/cube.obj";
+            Meshes.Add(Mesh.createMeshByObj( System.AppDomain.CurrentDomain.BaseDirectory + "../../" + file));
         }
 
         public void Start()
