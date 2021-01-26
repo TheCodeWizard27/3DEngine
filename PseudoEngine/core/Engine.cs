@@ -1,8 +1,10 @@
-﻿using PseudoEngine.DrawApi;
+﻿using Newtonsoft.Json;
+using PseudoEngine.DrawApi;
 using PseudoEngine.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -11,12 +13,23 @@ namespace PseudoEngine.core
     public class Engine
     {
         public readonly List<Mesh> Meshes = new List<Mesh>();
-        public readonly Camera Camera = new Camera(800, 800);
+        public Camera Camera = new Camera(800, 800)
+        {
+            Pos = new Vertex()
+            {
+                X = 20,
+                Y = -360,
+                Z = -7.2499999999999
+            }
+        };
 
         public DispatcherTimer Clock { get; private set; }
         public HashSet<Key> Keybuffer = new HashSet<Key>();
 
         public double YROT = 0;
+        public bool PointDisplayEnabled = true;
+        public bool WireframeDisplayEnabled = false;
+        public bool ColorfullPolygonDisplayEnabled = false;
 
         public delegate void Update();
         public event Update OnUpdate;
@@ -32,8 +45,25 @@ namespace PseudoEngine.core
 
         public void Init()
         {
-            var file = "/Graphics/cube.obj";
-            Meshes.Add(Mesh.createMeshByObj( System.AppDomain.CurrentDomain.BaseDirectory + "../../" + file));
+            var directory = Path.GetDirectoryName(
+                AppContext.BaseDirectory
+                );
+
+            try
+            {
+                var loadedCam = JsonConvert.DeserializeObject<Camera>(File.ReadAllText($"{directory}/camera.json"));
+                
+                if(loadedCam != null)
+                {
+                    Camera = loadedCam;
+                }
+            }catch(Exception ex)
+            {
+
+            }
+
+            var file = "/Graphics/teapot.obj";
+            Meshes.Add(Mesh.CreateMeshByObj($"{directory}/{file}"));
         }
 
         public void Start()
@@ -44,7 +74,7 @@ namespace PseudoEngine.core
         public void Stop()
         {
             Clock.Stop();
-            Console.WriteLine("Started Engine Loop");
+            Console.WriteLine("Stopped Engine Loop");
         }
 
         public void Draw(System.Drawing.Graphics graphics)
@@ -64,10 +94,13 @@ namespace PseudoEngine.core
 
             foreach (var mesh in Meshes)
             {
+
                 foreach(var face in mesh.Faces)
                 {
-                    var rotTest = Matrix4D.GetXRot((Math.PI * YROT) / 180);
-                    var rotTest2 = Matrix4D.GetYRot((Math.PI * (YROT / 2)) / 180);
+                    // Static flip
+                    var rotTest = Matrix4D.GetXRot((Math.PI * 160) / 180);
+                    YROT += .0001;
+                    var rotTest2 = Matrix4D.GetYRot((Math.PI * (YROT)) / 180);
 
                     var scaleTest = Matrix4D.GetScale(600 / 2, 600 / 2, 1);
 
@@ -81,10 +114,11 @@ namespace PseudoEngine.core
                     translatedV2 = translatedV2.Multiply(rotTest2);
                     translatedV3 = translatedV3.Multiply(rotTest2);
 
-                    var test1 = translatedV1 = translatedV1.Multiply(rotTest);
-                    var test2 = translatedV2 = translatedV2.Multiply(rotTest);
-                    var test3 = translatedV3 = translatedV3.Multiply(rotTest);
-
+                    
+                    translatedV1 = translatedV1.Multiply(rotTest);
+                    translatedV2 = translatedV2.Multiply(rotTest);
+                    translatedV3 = translatedV3.Multiply(rotTest);
+                    
                     /*
                     Console.WriteLine(translatedV1);
                     Console.WriteLine(rotTest);
@@ -128,20 +162,46 @@ namespace PseudoEngine.core
 
                     if (resultV1.Z <= 0.1 || resultV2.Z <= 0.1 || resultV3.Z <= 0.1) continue;
 
-                    g.DrawLine(whitePen, (float)resultV1.X, (float)resultV1.Y, (float)resultV2.X, (float)resultV2.Y);
-                    g.DrawLine(whitePen, (float)resultV2.X, (float)resultV2.Y, (float)resultV3.X, (float)resultV3.Y);
-                    g.DrawLine(whitePen, (float)resultV3.X, (float)resultV3.Y, (float)resultV1.X, (float)resultV1.Y);
-
+                    /*
                     g.DrawString($"{Math.Round(test1.X, 3)},{Math.Round(test1.Y, 3)},{Math.Round(test1.Z, 3)}", new Font(FontFamily.GenericSansSerif, 14), Brushes.Cyan, (float)resultV1.X, (float)resultV1.Y);
                     g.DrawString($"{Math.Round(test2.X, 3)},{Math.Round(test2.Y, 3)},{Math.Round(test2.Z, 3)}", new Font(FontFamily.GenericSansSerif, 14), Brushes.Cyan, (float)resultV2.X, (float)resultV2.Y);
                     g.DrawString($"{Math.Round(test3.X, 3)},{Math.Round(test3.Y, 3)},{Math.Round(test3.Z, 3)}", new Font(FontFamily.GenericSansSerif, 14), Brushes.Cyan, (float)resultV3.X, (float)resultV3.Y);
+                    */
+                    
+                    if(ColorfullPolygonDisplayEnabled)
+                    {
+                        var color = Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255), 255);
 
-                    g.FillPolygon(
-                        new SolidBrush(Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255), 255)), new PointF[]{
+                        g.FillPolygon(
+                            new SolidBrush(color), new PointF[]{
                         new PointF((float)resultV1.X, (float)resultV1.Y),
                         new PointF((float)resultV2.X, (float)resultV2.Y),
                         new PointF((float)resultV3.X, (float)resultV3.Y)
-                    });
+                        });
+                    }
+
+                    var v = resultV2.Clone().Subtract(resultV1);
+                    var w = resultV3.Clone().Subtract(resultV1);
+                    var n = new Vertex()
+                    {
+                        X = (v.Y * w.Z) - (v.Z * w.Y),
+                        Y = (v.Z * w.X) - (v.X * w.Z),
+                        Z = (v.X * w.Y) - (v.Y * w.X)
+                    };
+
+                    if(PointDisplayEnabled)
+                    {
+                        SetPixel(bufferedImage.Bitmap, (int)resultV1.X, (int)resultV1.Y);
+                        SetPixel(bufferedImage.Bitmap, (int)resultV1.X, (int)resultV1.Y);
+                        SetPixel(bufferedImage.Bitmap, (int)resultV1.X, (int)resultV1.Y);
+                    }
+
+                    if(WireframeDisplayEnabled)
+                    {
+                        g.DrawLine(whitePen, (float)resultV1.X, (float)resultV1.Y, (float)resultV2.X, (float)resultV2.Y);
+                        g.DrawLine(whitePen, (float)resultV2.X, (float)resultV2.Y, (float)resultV3.X, (float)resultV3.Y);
+                        g.DrawLine(whitePen, (float)resultV3.X, (float)resultV3.Y, (float)resultV1.X, (float)resultV1.Y);
+                    }
 
                     /*
                     g.DrawPolygon(
@@ -153,6 +213,7 @@ namespace PseudoEngine.core
                     */
                 }
             }
+            Console.WriteLine($"{Camera.Pos.X},{Camera.Pos.Y},{Camera.Pos.Z}");
 
             g.Dispose();
             graphics.DrawImage(bufferedImage.Bitmap, 0, 0);

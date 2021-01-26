@@ -19,13 +19,20 @@ namespace PseudoEngine
 
         public MainWindow()
         {
-            InitializeComponent();
-            _win = new WindowInteropHelper(GetWindow(this));
-            Left = 0 - SystemParameters.ResizeFrameVerticalBorderWidth - SystemParameters.FixedFrameVerticalBorderWidth;
+            try
+            {
+                InitializeComponent();
+                _win = new WindowInteropHelper(GetWindow(this));
+                Left = 0 - SystemParameters.ResizeFrameVerticalBorderWidth - SystemParameters.FixedFrameVerticalBorderWidth;
 
-            _engine = new Engine(60);
-            _engine.OnUpdate += Engine_OnUpdate;
-            _engine.Start();
+                _engine = new Engine(60);
+                _engine.OnUpdate += Engine_OnUpdate;
+                _engine.Start();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
         }
 
         private void Engine_OnUpdate()
@@ -58,6 +65,21 @@ namespace PseudoEngine
                         break;
                     case Key.Space:
                         _engine.Camera.Pos.Y -= 10;
+                        break;
+                    case Key.D1:
+                        _engine.PointDisplayEnabled = true;
+                        _engine.WireframeDisplayEnabled = false;
+                        _engine.ColorfullPolygonDisplayEnabled = false;
+                        break;
+                    case Key.D2:
+                        _engine.PointDisplayEnabled = false;
+                        _engine.WireframeDisplayEnabled = true;
+                        _engine.ColorfullPolygonDisplayEnabled = false;
+                        break;
+                    case Key.D3:
+                        _engine.PointDisplayEnabled = false;
+                        _engine.WireframeDisplayEnabled = false;
+                        _engine.ColorfullPolygonDisplayEnabled = true;
                         break;
                 }
             }

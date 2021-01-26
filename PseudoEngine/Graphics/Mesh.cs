@@ -23,20 +23,22 @@ namespace PseudoEngine.Graphics
             Faces = faces;
         }
 
-        public static Mesh createMeshByObj(string path)
+        public static Mesh CreateMeshByObj(string path)
         {
-            StreamReader sr = File.OpenText(path);
-            string line;
-            List<Vertex> readVertices = new List<Vertex>();
-            List<Polygon> readFaces = new List<Polygon>();
-            while ((line = sr.ReadLine()) != null)
+            using (var sr = File.OpenText(path))
             {
-                if(line != "")
+                string line;
+                var readVertices = new List<Vertex>();
+                var readFaces = new List<Polygon>();
+
+                while ((line = sr.ReadLine()) != null)
                 {
+                    if (line == "") continue;
+
                     if (line[0] == 'v')
                     {
-                        string[] items = line.Split(' ');
-                        Vertex v = new Vertex(
+                        var items = line.Split(' ');
+                        var v = new Vertex(
                             float.Parse(items[1]),
                             float.Parse(items[2]),
                             float.Parse(items[3])
@@ -45,17 +47,18 @@ namespace PseudoEngine.Graphics
                     }
                     else if (line[0] == 'f')
                     {
-                        string[] items = line.Split(' ');
-                        Polygon p = new Polygon(
-                            int.Parse(items[1]) -1,
-                            int.Parse(items[2]) -1,
-                            int.Parse(items[3]) -1
+                        var items = line.Replace("/","").Split(' ');
+                        var p = new Polygon(
+                            int.Parse(items[1]) - 1,
+                            int.Parse(items[2]) - 1,
+                            int.Parse(items[3]) - 1
                         );
                         readFaces.Add(p);
                     }
-                }                 
+                }
+
+                return new Mesh(readVertices.ToArray(), readFaces.ToArray());
             }
-            return new Mesh(vertices: readVertices.ToArray(), faces: readFaces.ToArray());
         }
     }
 }
